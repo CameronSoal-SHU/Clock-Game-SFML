@@ -1,6 +1,4 @@
 #include "Clock.h"
-#include "Time.h"
-#include "GameData.h"
 
 #include <stdio.h>
 #include <iomanip>
@@ -10,32 +8,32 @@ sf::RenderWindow* GameData::ptrRenderWindow;
 
 Clock::Clock()
 	: m_hrs(0), m_mins(0), m_secs(0),
-	m_totSeconds(0) {
+	m_totSecs(0) {
 	SetUpClockSprite();
-	printf_s("Clock Initialised: %uhrs, %umins, %usecs, Seconds past midnight: %u\n", m_hrs, m_mins, m_secs, m_totSeconds);
+	printf_s("Clock Initialised: %uhrs, %umins, %usecs, Seconds past midnight: %u\n", m_hrs, m_mins, m_secs, m_totSecs);
 }
 
 Clock::Clock(const Clock& clock) {
 	m_hrs = clock.m_hrs;
 	m_mins = clock.m_mins;
 	m_secs = clock.m_secs;
-	m_totSeconds = (m_hrs * 3600) + (m_mins * 60) + (m_secs);
+	m_totSecs = (m_hrs * 3600) + (m_mins * 60) + (m_secs);
 	SetUpClockSprite();
-	printf_s("Clock Copied: %uhrs, %umins, %usecs, Seconds past midnight: %u\n", m_hrs, m_mins, m_secs, m_totSeconds);
+	printf_s("Clock Copied: %uhrs, %umins, %usecs, Seconds past midnight: %u\n", m_hrs, m_mins, m_secs, m_totSecs);
 }
 
 Clock::Clock(const unsigned hrs, const unsigned mins, const unsigned secs)
 	: m_hrs(hrs), m_mins(mins), m_secs(secs),
-	m_totSeconds((hrs * 3600) + (mins * 60) + (secs)) {
+	m_totSecs((hrs * 3600) + (mins * 60) + (secs)) {
 	SetUpClockSprite();
-	printf_s("Clock Initialised: %uhrs, %umins, %usecs, Seconds past midnight: %u\n", m_hrs, m_mins, m_secs, m_totSeconds);
+	printf_s("Clock Initialised: %uhrs, %umins, %usecs, Seconds past midnight: %u\n", m_hrs, m_mins, m_secs, m_totSecs);
 }
 
 Clock::Clock(const unsigned secs)
-	: m_totSeconds(secs), 
+	: m_totSecs(secs), 
 	m_hrs((secs / 3600) % 24), m_mins((secs / 60) % 60), m_secs(secs % 60) {
 	SetUpClockSprite();
-	printf_s("Clock Initialised: %uhrs, %umins, %usecs, Seconds past midnight: %u\n", m_hrs, m_mins, m_secs, m_totSeconds);
+	printf_s("Clock Initialised: %uhrs, %umins, %usecs, Seconds past midnight: %u\n", m_hrs, m_mins, m_secs, m_totSecs);
 }
 
 void Clock::Update() {
@@ -46,17 +44,17 @@ void Clock::Update() {
 	else {	// Reset second delay and increment time
 		m_secDelay = 0;
 
-		++m_totSeconds;
-		if (m_totSeconds == 86400)
-			m_totSeconds = 0;
+		++m_totSecs;
+		if (m_totSecs == 86400)
+			m_totSecs = 0;
 
 		/* Rotate clock hands as time progresses */
-		m_sprClockHourHand.setRotation(m_totSeconds * (360.f / 43200));
-		m_sprClockMinHand.setRotation(m_totSeconds * (360.f / 3600)); 
+		m_sprClockHourHand.setRotation(m_totSecs * 0.00833f);	// 0.00833 = 360 / 43200
+		m_sprClockMinHand.setRotation(m_totSecs * 0.1f);			// 0.1 = 360 / 3600
 
-		m_secs = m_totSeconds % 60;
-		m_mins = (m_totSeconds / 60) % 60;
-		m_hrs = (m_totSeconds / 3600) % 24;
+		m_secs = m_totSecs % 60;
+		m_mins = (m_totSecs / 60) % 60;
+		m_hrs = (m_totSecs / 3600) % 24;
 	}
 }
 
@@ -66,28 +64,27 @@ void Clock::Draw() {
 	GameData::ptrRenderWindow->draw(m_sprClockMinHand);
 }
 
-unsigned Clock::GetTimeInSecs() {
-	return m_totSeconds;
+unsigned Clock::GetTimeInSecs() const {
+	return m_totSecs;
 }
 
-unsigned Clock::GetHours() {
+unsigned Clock::GetHours() const {
 	return m_hrs;
 }
 
-unsigned Clock::GetMins() {
+unsigned Clock::GetMins() const {
 	return m_mins;
 }
 
-unsigned Clock::GetSecs() {
+unsigned Clock::GetSecs() const {
 	return m_secs;
 }
 
-std::string Clock::GetTimeFormatted()
-{
+std::string Clock::GetTimeFormatted() const {
 	// Hours, Mins and Secs formatted to string
-	std::string fHours = m_hrs > 9 ? std::to_string(m_hrs) : '0' + std::to_string(m_hrs);
-	std::string fMins = m_mins > 9 ? std::to_string(m_mins) : '0' + std::to_string(m_mins);
-	std::string fSecs = m_secs > 9 ? std::to_string(m_secs) : '0' + std::to_string(m_secs);
+	const std::string fHours = m_hrs > 9 ? std::to_string(m_hrs) : '0' + std::to_string(m_hrs);
+	const std::string fMins = m_mins > 9 ? std::to_string(m_mins) : '0' + std::to_string(m_mins);
+	const std::string fSecs = m_secs > 9 ? std::to_string(m_secs) : '0' + std::to_string(m_secs);
 
 	return fHours + ":" + fMins + ":" + fSecs;
 }
@@ -127,4 +124,8 @@ void Clock::SetUpClockSprite() {
 	m_sprClockFace.setScale(clockScale);
 	m_sprClockHourHand.setScale(clockHandScale);
 	m_sprClockMinHand.setScale(clockHandScale);
+
+	/* Set initial rotation of clock hands at current time */
+	m_sprClockHourHand.setRotation(m_totSecs * 0.00833f);	// 0.00833 = 360 / 43200
+	m_sprClockMinHand.setRotation(m_totSecs * 0.1f);			// 0.1 = 360 / 3600
 }

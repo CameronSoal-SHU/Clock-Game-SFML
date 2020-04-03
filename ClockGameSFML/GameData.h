@@ -5,8 +5,7 @@
 List of constant "Magic Numbers" used for the game
 incl. Screen Dimensions, ascii limits, key values, etc.
 */
-namespace GameConstants
-{
+namespace GameConstants {
 	const int SCREEN_RES_X{ 1200 };
 	const int SCREEN_RES_Y{ 900 };
 
@@ -29,6 +28,7 @@ namespace GameConstants
 	const char NUM_MIN{ 48 };
 	const char NUM_MAX{ 57 };
 
+	// Number of clocks to select from (not incl. analogue)
 	const unsigned CLOCK_COUNT{ 3 };
 }
 
@@ -36,8 +36,7 @@ namespace GameConstants
 Hold public references to data 
 used across the program
 */
-struct GameData
-{
+struct GameData {
 	static sf::RenderWindow* ptrRenderWindow;
 	static sf::Font dSansFont;		// DroidSans
 	static sf::Font digitalFont;	// Digital-7
@@ -47,7 +46,4 @@ struct GameData
 Modifyable game settings used in-game
 */
 struct GameSettings
-{
-	int costPerDice{ 1 };
-	int rewardPayOut{ 10 };
-};
+{};

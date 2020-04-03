@@ -1,16 +1,15 @@
 #pragma once
-#include "GameData.h"
 #include "GameManager.h"
 #include "DigitalClock.h"
 #include "Player.h"
+#include "RandomNumberGenerator.h" 
 
 /* 
 Main class to initialise, update and render the game.
 Handles the data and inputs and what should be displayed on the screen
 through communication with other classes (such as Player, IOHandler, GameManager, etc.)
 */
-class MainGame
-{
+class MainGame {
 public:
 	/* 
 	Sets up render window reference, font, GameManager and IOHandler
@@ -34,24 +33,31 @@ public:
 	static GameSettings gameSettings;
 private:
 	/* Clocks to render on-screen */
-	DigitalClock* m_digiClock;
-	Clock* m_clocks[GameConstants::CLOCK_COUNT];
-
-	void GenerateClocks();
+	DigitalClock* m_ptrDigiClock;
+	Clock* m_ptrClocks[GameConstants::CLOCK_COUNT];
 
 	/* Player information */
 	Player m_player;
+
+	/* Default position for rendering digital text on screen */
+	sf::Vector2<float> defaultTxtPos { 25.f, 10.f };
 
 	/* Valid input flag */
 	bool m_inputValid = true;
 	/* Random clock chosen */
 	unsigned m_correctClock;
 
+	void GenerateClocks();
+
 	/* 
 	Creates and draws a given text message on screen
 	<param "msg"> Message to render </param>
 	<param "pos"> Position of message on-screen (0, 0) by default </param>
-	<param "font"> Font of message on-screen (0, 0) by default </param>
+	<param "font"> Font of message on-screen droid sans by default </param>
 	*/
 	void RenderMessage(const std::string& msg, const sf::Vector2f& pos = { 0.f, 0.f }, const sf::Font& font = GameData::dSansFont);
+
+	/* Functions to handle and process inputs made by user */
+	void DisplayClocksLogic();	// Shown when selecting a clock
+	void ResultsScreenLogic();	// Shown when the player wins/loses
 };

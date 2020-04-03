@@ -1,15 +1,10 @@
 #pragma once
-
-// Forward declaration(s)
-class MainGame;
-
 /*
 Singleton Class to store, manage and change the current state of the program.
 Allows for clear changing between game states to display different screens
 to the player. (Init state by default to setup game)
 */
-class GameManager
-{
+class GameManager {
 public:
 	/* 
 	All possible gamestates the game can be in.
@@ -38,7 +33,7 @@ public:
 	upon doing so, change the game state from init (default)
 	to main_menu to show the main menu screen.
 	*/
-	void Init(MainGame* mainGamePtr);
+	void Init();
 
 	/*
 	Handles changing the current state of the game and setup any
@@ -47,8 +42,6 @@ public:
 	*/
 	void OnStateChange(game_state newState);
 private:
-	MainGame* m_mainGamePtr = nullptr;
-
 	/* Singleton methods to prevent additional instances */
 	GameManager() = default;
 	~GameManager() = default;

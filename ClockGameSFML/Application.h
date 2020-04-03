@@ -5,8 +5,7 @@
 Handle Setting up the application window
 and running the game through MainGame
 */
-class Application
-{
+class Application {
 public:
 	// Sets up the application window, dimensions, name, MainGame, etc.
 	Application();

@@ -4,8 +4,7 @@
 /* 
 Digital representation of an analogue clock to show time.
 */
-class DigitalClock : public Clock
-{
+class DigitalClock : public Clock {
 public:
 	/* Constructors to initialise clocks (calls base constructors)
 	(default 00:00:00)

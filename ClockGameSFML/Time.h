@@ -3,8 +3,7 @@
 
 // Static class to hold internal time information,
 // for example: delta time between frames
-class Time
-{
+class Time {
 public:
 	/* Sets the delta time (in seconds) and resets the clock */
 	static void ResetClock();

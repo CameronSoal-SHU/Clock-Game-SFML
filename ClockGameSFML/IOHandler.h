@@ -5,13 +5,13 @@
 /* 
 Static class to handle receiving and validating inputs by the user
 */
-class IOHandler
-{
+class IOHandler {
 public:
 	// Functions used to limit inputs
-	static void NumericInput();
-	static void AlphaInput();
-	static void AlphaNumericInput();
+	//<param "maxLength"> Maximum character length of input buffer (256 chars default) </param>
+	static void NumericInput(const unsigned maxLength = 256);
+	static void AlphaInput(const unsigned maxLength = 256);
+	static void AlphaNumericInput(const unsigned maxLength = 256);
 
 	/* Used to clear both the lastInput and inputBuffer variables
 	When the held data is no longer needed */

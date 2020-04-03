@@ -1,5 +1,4 @@
 #include "DigitalClock.h"
-#include "GameData.h"
 
 DigitalClock::DigitalClock() 
 	: DigitalClock::Clock() {
@@ -47,7 +46,7 @@ void DigitalClock::SetPosition(const sf::Vector2<float>& newPos) {
 void DigitalClock::SetUpClockSprite() {
 	assert(m_txtrDigiClockBG.loadFromFile("../Assets/Textures/digital_clock.png"));
 
-	const sf::Vector2<int> digiClockRectPos(0, 0), digiClockRectSize(512, 347);		// Digital clock sprite rect info
+	const sf::Vector2<int> digiClockRectPos(0, 0), digiClockRectSize(511, 347);		// Digital clock sprite rect info
 	const sf::Vector2<float> digiClockScale(0.9f, 0.9f);							// Digital clock sprite scaling
 
 	// Set up clock display background sprite

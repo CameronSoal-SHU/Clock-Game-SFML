@@ -1,4 +1,5 @@
 #include "GameManager.h"
+
 #include <stdio.h>
 
 // Forward declaration(s)
@@ -11,19 +12,15 @@ GameManager::game_state m_gameState;
 //	printf_s("Game Initialised!\n");
 //}
 
-void GameManager::Init(MainGame* mainGamePtr)
-{
-	m_mainGamePtr = mainGamePtr;
+void GameManager::Init() {
 	OnStateChange(DISPLAY_CLOCKS);
 }
 
-void GameManager::OnStateChange(GameManager::game_state newState)
-{
-	if (gameState != newState)
-	{
+void GameManager::OnStateChange(GameManager::game_state newState) {
+	if (gameState != newState) {
 		printf_s("State changed to: ");
-		switch (newState)
-		{
+
+		switch (newState) {
 		case INIT:
 			printf_s("Init!\n");
 			break;

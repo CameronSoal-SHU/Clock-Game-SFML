@@ -1,5 +1,4 @@
 #pragma once
-
 /*
 Static class desinged to seed and generate random values
 */

@@ -5,8 +5,7 @@
 Class to hold data about the players play session,
 holds the players score to be displayed and stored
 */
-class Player
-{
+class Player {
 public:
 	/* Initialise the players balance and rolls to 0 */
 	Player();

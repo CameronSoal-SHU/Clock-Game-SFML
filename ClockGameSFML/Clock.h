@@ -3,13 +3,14 @@
 #include <assert.h>
 
 #include "SFML/Graphics.hpp"
+#include "GameData.h"
+#include "Time.h"
 
 /*
 Clock class designed to simulate and replicate a real-life (24hr) clock
 on-screen.
 */
-class Clock
-{
+class Clock {
 public:
 	/* Constructors to initialise clocks
 	(default 00:00:00)
@@ -24,20 +25,20 @@ public:
 	Clock(const unsigned secs);
 
 	/* Called every frame */
-	void virtual Update();
+	virtual void Update();
 	/* Called after Update */
-	void virtual Draw();
+	virtual void Draw();
 
-	/* <return>Time in total seconds after 00:00:00</return> */
-	unsigned GetTimeInSecs();
-	unsigned GetHours();
-	unsigned GetMins();
-	unsigned GetSecs();
+	unsigned GetHours() const;
+	unsigned GetMins() const;
+	unsigned GetSecs() const;
+	/* <return> Time in total seconds after 00:00:00 </return> */
+	unsigned GetTimeInSecs() const;
 
 	/* <return>Returns the current time in a formatted string format</return>*/
-	std::string GetTimeFormatted();
+	std::string GetTimeFormatted() const;
 
-	void virtual SetPosition(const sf::Vector2<float>& position);
+	virtual void SetPosition(const sf::Vector2<float>& position);
 private:
 	// Store textures
 	sf::Texture m_txtrClockFace;
@@ -48,15 +49,15 @@ private:
 	sf::Sprite m_sprClockHourHand;
 	sf::Sprite m_sprClockMinHand;
 protected:
-	/* Privately store time in hours, minutes and seconds (Should NEVER be externally changed) */
+	/* Store time in hours, minutes and seconds in protected scope (Should NEVER be externally changed unless by derived class) */
 	unsigned m_hrs;
 	unsigned m_mins;
 	unsigned m_secs;
-	unsigned m_totSeconds;	// Total seconds since midnight (00:00:00)
+	unsigned m_totSecs;	// Total seconds after midnight (00:00:00)
 
 	/* Used to count every second to prevent strange behaviour with deltaTime slowdowns */
 	float m_secDelay = 0.f;
 
-	void SetUpClockSprite();
+	virtual void SetUpClockSprite();
 };
 
