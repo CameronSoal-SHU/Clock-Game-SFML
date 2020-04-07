@@ -1,8 +1,2 @@
-﻿  Application.cpp
-  DigitalClock.cpp
-  GameManager.cpp
-  MainGame.cpp
-  RandomNumberGenerator.cpp
-  main.cpp
-  Generating Code...
-  ClockGameSFML.vcxproj -> F:\OOP4G\Evidence\Clock-Game-SFML\Debug\ClockGameSFML.exe
+﻿  MainGame.cpp
+  ClockGameSFML.vcxproj -> C:\Users\Cameron\Documents\GitHub\Clock-Game-SFML\Debug\ClockGameSFML.exe

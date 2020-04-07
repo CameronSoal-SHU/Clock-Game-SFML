@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-// Forward declaration(s)
+// Static class variable instances
 GameManager::game_state m_gameState;
 
 //GameManager::GameManager()
@@ -13,7 +13,7 @@ GameManager::game_state m_gameState;
 //}
 
 void GameManager::Init() {
-	OnStateChange(DISPLAY_CLOCKS);
+	OnStateChange(game_state::DISPLAY_CLOCKS);
 }
 
 void GameManager::OnStateChange(GameManager::game_state newState) {
@@ -21,16 +21,16 @@ void GameManager::OnStateChange(GameManager::game_state newState) {
 		printf_s("State changed to: ");
 
 		switch (newState) {
-		case INIT:
+		case game_state::INIT:
 			printf_s("Init!\n");
 			break;
-		case DISPLAY_CLOCKS:
+		case game_state::DISPLAY_CLOCKS:
 			printf_s("Display Clocks!\n");
 			break;
-		case GUESS_CORRECT:
+		case game_state::GUESS_CORRECT:
 			printf_s("Guess Correct!\n");
 			break;
-		case GUESS_INCORRECT:
+		case game_state::GUESS_INCORRECT:
 			printf_s("Guess Incorrect!\n");
 			break;
 		default:

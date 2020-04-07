@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <iomanip>
 
-// Forward Declarations
+// Static class variable instances
 sf::RenderWindow* GameData::ptrRenderWindow;
 
 Clock::Clock()

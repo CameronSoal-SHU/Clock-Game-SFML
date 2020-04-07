@@ -1,6 +1,7 @@
 #include "IOHandler.h"
 #include "GameData.h"
 
+// Static class variable instances
 sf::Uint32 IOHandler::lastInput;
 std::string IOHandler::inputBuffer;
 

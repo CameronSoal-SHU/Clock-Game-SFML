@@ -3,7 +3,7 @@
 
 #include <assert.h>
 
-// Forward declaration(s)
+// Static class variable instances
 GameManager::game_state GameManager::gameState;
 GameSettings MainGame::gameSettings;
 sf::Font GameData::digitalFont;
@@ -49,13 +49,13 @@ void MainGame::GenerateClocks() {
 // TODO: Create winning and losing screens and allow the player to play again or quit whenever
 void MainGame::Update() {
 	switch (GameManager::GetInstance().gameState) {
-	case GameManager::INIT:
+	case GameManager::game_state::INIT:
 		break;
-	case GameManager::DISPLAY_CLOCKS:
+	case GameManager::game_state::DISPLAY_CLOCKS:
 		DisplayClocksLogic();
 		break;
-	case GameManager::GUESS_CORRECT:
-	case GameManager::GUESS_INCORRECT:
+	case GameManager::game_state::GUESS_CORRECT:
+	case GameManager::game_state::GUESS_INCORRECT:
 		ResultsScreenLogic();
 		break;
 	default:	// Should never be taken
@@ -69,37 +69,42 @@ void MainGame::Update() {
 
 void MainGame::Render() {
 	switch (GameManager::GetInstance().gameState) {
-	case GameManager::INIT:
+	case GameManager::game_state::INIT:
 		break;
-	case GameManager::DISPLAY_CLOCKS:
+	case GameManager::game_state::DISPLAY_CLOCKS:
 		// Render each clock on screen
 		m_ptrDigiClock->Draw();											// Render Digital clock onscreen
 		for (unsigned i(0); i < GameConstants::CLOCK_COUNT; ++i) {		// Render Analogue clocks onscreen
+			RenderMessage(std::to_string(i + 1), { 100.f + (350.f * i), 350.f }, GameData::digitalFont);
 			m_ptrClocks[i]->Draw();
 		}
 
 		// Display player score and ask for clock choice
-		RenderMessage("Current Score: " + std::to_string(m_player.GetPlayerScore()) + "\n\n[ESC] to exit...", defaultTxtPos, GameData::digitalFont);
-		RenderMessage("Which clock matches the digital clock? (1, 2 or 3)?: " + IOHandler::inputBuffer, { 25.f, 750.f });
+		RenderMessage("Current Score: " + std::to_string(m_player.GetPlayerScore()) + 
+			"\n\n[ESC] to exit...", defaultTxtPos, GameData::digitalFont);
+		RenderMessage("Which clock matches the digital clock? (1, 2 or 3)?: " + 
+			IOHandler::inputBuffer + "\nPress [Return] to submit answer", { 25.f, 750.f });
 
 		// Render error message on invalid inputs
 		if (!m_inputValid) {
-			RenderMessage("\nInput invalid, please choose 1, 2 or 3", { 25.f, 750.f });
+			RenderMessage("\n\nInput invalid, please choose 1, 2 or 3", { 25.f, 750.f });
 		}
 		break;
-	case GameManager::GUESS_CORRECT:
+	case GameManager::game_state::GUESS_CORRECT:
 		RenderMessage("You are correct!\n\nYour score: " + std::to_string(m_player.GetPlayerScore()) + 
-			"\n\nPlay again? (y/n): " + IOHandler::inputBuffer, defaultTxtPos, GameData::digitalFont);
+			"\n\nPlay again? (y/n): " + IOHandler::inputBuffer + 
+			"\n\n[Return] to submit input, [ESC/n] to exit...", defaultTxtPos, GameData::digitalFont);
 
 		// Render error message on invalid inputs
 		if (!m_inputValid) {
 			RenderMessage("\n\n\n\n\n\nInput Invalid! Please enter y/n", defaultTxtPos, GameData::digitalFont);
 		}
 		break;
-	case GameManager::GUESS_INCORRECT:
+	case GameManager::game_state::GUESS_INCORRECT:
 		RenderMessage("You are incorrect! Correct answer: " + std::to_string(m_correctClock + 1) + 
 			"\n\nYour score: " + std::to_string(m_player.GetPlayerScore()) +
-			"\n\nPlay again? (y/n): " + IOHandler::inputBuffer + "\n\n[ESC/n] to exit...", defaultTxtPos, GameData::digitalFont);
+			"\n\nPlay again? (y/n): " + IOHandler::inputBuffer + 
+			"\n\n[Return] to submit input, [ESC/n] to exit...", defaultTxtPos, GameData::digitalFont);
 
 		// Render error message on invalid inputs
 		if (!m_inputValid) {
@@ -135,12 +140,12 @@ void MainGame::DisplayClocksLogic() {
 				// Win!
 				printf_s("Player correct!\n");
 				m_player.SetPlayerScore(m_player.GetPlayerScore() + 1);			// Increase player score!
-				GameManager::GetInstance().OnStateChange(GameManager::GUESS_CORRECT);
+				GameManager::GetInstance().OnStateChange(GameManager::game_state::GUESS_CORRECT);
 			}
 			else {
 				// Lose!
 				printf_s("Player incorrect!\n");
-				GameManager::GetInstance().OnStateChange(GameManager::GUESS_INCORRECT);
+				GameManager::GetInstance().OnStateChange(GameManager::game_state::GUESS_INCORRECT);
 			}
 
 			IOHandler::Flush();
@@ -157,7 +162,7 @@ void MainGame::ResultsScreenLogic() {
 
 		if (lcInput == 'y') {		// Play again
 			GenerateClocks();		// Generate new clocks
-			GameManager::GetInstance().OnStateChange(GameManager::DISPLAY_CLOCKS);
+			GameManager::GetInstance().OnStateChange(GameManager::game_state::DISPLAY_CLOCKS);
 		}
 		else if (lcInput == 'n') {	// Exit game
 			GameData::ptrRenderWindow->close();

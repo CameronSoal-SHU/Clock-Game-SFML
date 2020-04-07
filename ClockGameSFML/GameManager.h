@@ -11,7 +11,7 @@ public:
 	Switches between them at run-time to handle
 	which screen should be shown to the player.
 	*/
-	enum game_state
+	enum class game_state
 	{
 		INIT,			// Setup the game
 		DISPLAY_CLOCKS,	// Display clocks on-screen
